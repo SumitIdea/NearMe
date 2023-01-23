@@ -20,7 +20,7 @@ const Login = () => {
   const [currentLatitude, setCurrentLatitude] = useState('...');
   const [locationStatus, setLocationStatus] = useState('');
   const [isStartLoading , setstartLoading] = useState(true)
-
+  const [hidePassword, setHidePassword] = useState(false)
   const CheckConnectivity = () => {
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
@@ -99,6 +99,10 @@ const Login = () => {
       }
     }
   };
+//Toggle password visibility
+managePasswordVisibility = () => {
+ setHidePassword(!hidePassword)
+};
 
   loginUser = async (email, password) => {
     var date = new Date().getDate(); //Current Date
@@ -223,7 +227,10 @@ const Login = () => {
           <View style={{ flexDirection: "row" }}>
             <Text style={{ flex: .8, fontWeight: 'bold' }}>Login User</Text>
           </View>
-          <TextInput
+
+          <View style={styles.btnContainer}>
+            <Image source={require('../assets/open-email.png')} style={styles.icon} />
+            <TextInput
             style={styles.textInput}
             placeholder="Email"
             placeholderTextColor="grey" 
@@ -231,17 +238,33 @@ const Login = () => {
             autoCapitalize="none"
             autoCorrect={false}>
           </TextInput>
+          </View>
 
+          <View style={styles.btnContainer}>
+            <Image source={require('../assets/password.png')} style={styles.icon} />
           <TextInput
             style={styles.textInput}
             placeholder="Password"
-            secureTextEntry
+            secureTextEntry={!hidePassword}
             placeholderTextColor="grey" 
             onChangeText={(password) => setPassword(password)}
             autoCapitalize="none"
             autoCorrect={false}>
           </TextInput>
-
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.visibilityBtn}
+                  onPress={managePasswordVisibility}>
+                  <Image
+                    source={
+                      hidePassword
+                        ? require('../assets/show.png')
+                        : require('../assets/invisible.png')
+                    }
+                    style={styles.btnImage}
+                  />
+                </TouchableOpacity>
+          </View>
           <TouchableOpacity
             onPress={() => CheckConnectivity()}
             style={styles.button}>
@@ -297,6 +320,15 @@ export default Login
 
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    transform: [{ rotate: '360deg'}],
+    width: 25,
+    height: 25
+  },
   preloader: {
     left: 0,
     right: 0,
@@ -326,9 +358,11 @@ const styles = StyleSheet.create({
   textInput: {
     paddingTop: 20,
     paddingBottom: 10,
-    width: 400,
+    width: 350,
     color:'black',
     fontSize: 16,
+    marginStart:10,
+    marginEnd:10,
     borderBottomColor: '#000',
     borderBottomWidth: 1,
     marginBottom: 20,
@@ -343,5 +377,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: 50,
+  },
+  visibilityBtn: {
+    position: 'absolute',
+    right: 25,
+    height: 25,
+    width: 25,
+    padding: 0,
+    marginTop: 133,
+  },
+  btnImage :{
+    width:30,
+    height:30
   }
 })
