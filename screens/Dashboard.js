@@ -199,16 +199,17 @@ const Dashboard = (route) => {
                 <Callout tooltip>
 
                   <View style={styles.bubble}>
-                    <Text style={styles.name}>wooMe </Text>
                     {/* <Text>A short description</Text> */}
                     {/* <Image 
                   style={styles.image}
                   source={require('../assets/app_icon.png')}            
                   ></Image> */}
-                    <Text style={{ height: 100, width: 100, marginBottom: 20 }}>
+                    <Text style={{ height: 120, width: 120}}>
+                    <Text style={styles.name}>Hello , Sumit</Text>
+
                       <Image
-                        source={{ uri: 'https://facebook.github.io/react/logo-og.png' }}
-                        resizeMode="contain"
+                        source={{ uri: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' }}
+                        resizeMode="center"
                         style={styles.image} />
 
                     </Text>
@@ -224,7 +225,32 @@ const Dashboard = (route) => {
             </>
             )}  
         </MapView>
+        <View style = {styles.container}>
+         <View>
+         <TouchableOpacity
+            style={styles.button}>
+            <Text style={{ fontWeight: 'bold', fontSize: 22, color: 'black' }}>My Room</Text>
+          </TouchableOpacity>
+         </View>
+
+         <View>
+         <TouchableOpacity
+            style={styles.button}>
+            <Text style={{ fontWeight: 'bold', fontSize: 22, color: 'black' }}>Explore</Text>
+          </TouchableOpacity>
+         </View>
+
+         <View>
+         <TouchableOpacity
+            style={styles.button}>
+            <Text style={{ fontWeight: 'bold', fontSize: 22, color: 'black' }}>Invite</Text>
+          </TouchableOpacity>
+         </View>
+
       </View>
+
+      </View>
+    
 
 
 
@@ -235,6 +261,21 @@ const Dashboard = (route) => {
 export default Dashboard
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor:'#fff'
+ },
+ button: {
+  height: 50,
+  width: 150,
+  backgroundColor: '#fff',
+  alignItems: 'center',
+  alignSelf: 'center',
+  justifyContent: 'center',
+  borderRadius: 50,
+},
   // container: {
   //   ...StyleSheet.absoluteFillObject,
   //   height: 400,
@@ -243,7 +284,7 @@ const styles = StyleSheet.create({
   //   alignItems: 'center',
   // },
   map: {
-    height: '93%',
+    height: '60%',
     // ...StyleSheet.absoluteFillObject,
 
   },
@@ -256,7 +297,8 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 0.5,
     padding: 15,
-    width: 150,
+    width: 115,
+    height:130
   },
   // Arrow below the bubble
   arrow: {
@@ -284,8 +326,11 @@ const styles = StyleSheet.create({
   },
   // Character image
   image: {
-    width: 100,
+    width: 60,
     height: 50,
+    justifyContent:'center',
+    alignItems:'center',
+    alignSelf:'center',
     backgroundColor: '#fff',
   },
 })
