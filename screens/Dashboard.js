@@ -6,7 +6,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout, AnimatedRegion, Circle } from 'react-native-maps'
 import { firebase } from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database';
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import ProfileScreen from './ProfileScreen';
+import MyRoom from './MyRoom';
+import Explore from './Explore';
 // let itemsRef = database().ref('/User_Details');
 
 
@@ -23,6 +27,60 @@ const Dashboard = (route) => {
   const [currentLocation, setCurrentLocation] = useState({userlat,userlong}); 
   const [getName, setName] = useState('')
 
+  // function FeedScreen() {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <Text>Feed!</Text>
+  //     </View>
+  //   );
+  // }
+  
+  // function NotificationsScreen() {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <Text>Notifications!</Text>
+  //     </View>
+  //   );
+  // }
+  
+  // function ProfileScreen() {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <Text>Profile!</Text>
+  //     </View>
+  //   );
+  // }
+  
+  const Tab = createMaterialTopTabNavigator();
+  
+  function MyTabs() {
+    return (
+      <Tab.Navigator
+        initialRouteName="MyRoom"
+        screenOptions={{
+          tabBarActiveTintColor: '#800000',
+          tabBarLabelStyle: { fontSize: 14 },
+          tabBarStyle: { backgroundColor: 'white' },
+        }}
+      >
+        <Tab.Screen
+          name="MyRoom"
+          component={MyRoom}
+          options={{ tabBarLabel: 'MyRoom' }}
+        />
+        <Tab.Screen
+          name="Explore"
+          component={Explore}
+          options={{ tabBarLabel: 'Explore' }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{ tabBarLabel: 'Profile' }}
+        />
+      </Tab.Navigator>
+    );
+  }
 
   useEffect (() => {
     database()
@@ -152,7 +210,6 @@ const Dashboard = (route) => {
       </View>
 
 
-      <View >
         <MapView
           ref={mapRef}
           showsUserLocation={true}
@@ -225,7 +282,7 @@ const Dashboard = (route) => {
             </>
             )}  
         </MapView>
-        <View style = {styles.container}>
+        {/* <View style = {styles.container}>
          <View>
          <TouchableOpacity
             style={styles.button}>
@@ -242,17 +299,20 @@ const Dashboard = (route) => {
 
          <View>
          <TouchableOpacity
-            style={styles.button}>
-            <Text style={{ fontWeight: 'bold', fontSize: 22, color: 'black' }}>Invite</Text>
+            style={styles.button}
+            onPress={()=>getProfile()}>
+            <Text style={{ fontWeight: 'bold', fontSize: 22, color: 'black' }}>Profile</Text>
           </TouchableOpacity>
          </View>
 
-      </View>
+      </View> */}
+   
+                  
 
-      </View>
-    
-
-
+      <NavigationContainer
+    independent={true}>
+      <MyTabs />
+    </NavigationContainer>
 
     </SafeAreaView>
   )
@@ -284,7 +344,8 @@ const styles = StyleSheet.create({
   //   alignItems: 'center',
   // },
   map: {
-    height: '60%',
+    height: '30%',
+    
     // ...StyleSheet.absoluteFillObject,
 
   },
