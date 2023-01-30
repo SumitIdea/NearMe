@@ -309,8 +309,8 @@ const Dashboard = (route) => {
    
                   
 
-      <NavigationContainer
-    independent={true}>
+    <NavigationContainer
+      independent={true}>
       <MyTabs />
     </NavigationContainer>
 
