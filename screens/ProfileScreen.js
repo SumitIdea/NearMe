@@ -375,7 +375,7 @@ const ProfileScreen = () => {
           flexDirection: 'row',
           alignItems: 'center',
           marginTop: 20,
-          marginLeft: 20
+          marginLeft: 10
         }}>
         <Image
           style={{ height: 60, width: 60, backgroundColor: 'grey', borderRadius: 50 }}

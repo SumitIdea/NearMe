@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, StatusBar, ToastAndroid, Alert, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, StatusBar, ToastAndroid, Alert, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useEffect, useRef,useState } from 'react';
 import { useNavigation } from '@react-navigation/native'
 import { primary } from '../constants/Colors'
@@ -164,7 +164,7 @@ const Dashboard = (route) => {
 
 
   return (
-    <SafeAreaView style={{ flex: 1, flexDirection: 'column', backgroundColor: primary }}>
+          <SafeAreaView style={{ flex: 1, flexDirection: 'column', backgroundColor: primary }}>
       <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#FED8B1" translucent={true} />
 
       <TouchableOpacity

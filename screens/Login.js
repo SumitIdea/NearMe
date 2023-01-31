@@ -216,7 +216,7 @@ managePasswordVisibility = () => {
     <View style={styles.conatiner}>
       <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#FED8B1" translucent={true} />
 
-      <Image style={{ fontWeight: 'bold', fontSize: 26, marginBottom: 20, width: 200, height: 50 }}
+      <Image style={{ fontWeight: 'bold', marginBottom: 20, width: 200, height: 50 }}
         source={{
           uri: 'https://www.freelogoservices.com/api/main/images/1j+ojFVDOMkX9Wytexe43D6kh...SDrhFKnxvFwXs1M3EMoAJtlicsgfVu9Pg...',
         }}   >
@@ -225,7 +225,7 @@ managePasswordVisibility = () => {
       <View style={styles.card}>
         <>
           <View style={{ flexDirection: "row" }}>
-            <Text style={{ flex: .8, fontWeight: 'bold' }}>Login User</Text>
+            <Text style={{ fontWeight: 'bold' }}>Login User</Text>
           </View>
 
           <View style={styles.btnContainer}>
