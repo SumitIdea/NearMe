@@ -20,9 +20,11 @@ const Registration = () => {
   const [isloading, setloading]= useState(false)
   const navigation = useNavigation()
 
-  const register = async(name, email, password, c_password, phone_no, city) => {
-  
-    database().ref('/User_SignUp').push({
+  const register = async(name, email, password, phone_no, city) => {
+  console.log("....sign up phone no", phone_no);
+  console.log("....sign up city", city);
+
+  database().ref('/User_SignUp').push({
       "userName": name,
       "userEmail": email,
       "userPhone" : phone_no,
@@ -132,6 +134,7 @@ const Registration = () => {
         <TextInput
           style={styles.textInput}
           placeholder="Phone No"
+          inputMode='numeric'
           placeholderTextColor="grey" 
           onChangeText={(userPhoneNo) => setUser_PhoneNo(userPhoneNo)}
           autoCorrect={false}>

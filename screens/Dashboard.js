@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, StatusBar, ToastAndroid, Alert, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, StatusBar, ToastAndroid, Alert, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef,useState } from 'react';
 import { useNavigation } from '@react-navigation/native'
 import { primary } from '../constants/Colors'
@@ -12,20 +12,39 @@ import ProfileScreen from './ProfileScreen';
 import MyRoom from './MyRoom';
 import Explore from './Explore';
 // let itemsRef = database().ref('/User_Details');
+import {Dimensions} from 'react-native';
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const Dashboard = (route) => {
+  // console.log("propsss",route);
   var userLongitude = route.route.params.userLongitude
   var userLatitude = route.route.params.userLatitude
   var userlong = parseFloat(userLongitude)
   var userlat = parseFloat(userLatitude)
-  console.log("..latlong.....",userlat+"::::::"+userlong+".........."+typeof(userlat));
+  // console.log("..latlong.....",userlat+"::::::"+userlong+".........."+typeof(userlat));
  
 
   const navigation = useNavigation()
   const mapRef = useRef(null);
   const [currentLocation, setCurrentLocation] = useState({userlat,userlong}); 
   const [getName, setName] = useState('')
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+  
+      const locationsData =database().ref('/locations')
+      const data = locationsData.on('value', snapshot => {
+        setLocations([]);
+        snapshot.forEach(function(childSnapshot) {
+            setLocations(users_location => [...users_location, childSnapshot.val()])
+        });
+      })
+    };
+    fetchData();
+  }, []);
 
   // function FeedScreen() {
   //   return (
@@ -75,6 +94,9 @@ const Dashboard = (route) => {
         />
         <Tab.Screen
           name="Profile"
+          initialParams={{ userEmailId: route.route.params.userEmail, "username": route.route.params.username,
+        "phone_no": route.route.params.user_phoneNo,
+        "user_city":route.route.params.user_cityName}}
           component={ProfileScreen}
           options={{ tabBarLabel: 'Profile' }}
         />
@@ -87,7 +109,7 @@ const Dashboard = (route) => {
     .ref('/User_SignUp')
     .once('value')
     .then(snapshot => {
-      console.log('User data: ', snapshot.val());
+      // console.log('User data: ', snapshot.val());
       // setName(snapshot.val().userName)
     });
     
@@ -141,30 +163,30 @@ const Dashboard = (route) => {
 
   // },[])
 
-  useEffect(() => {
-    //   if (mapRef.current) {
-    //     mapRef.current.fitToCoordinates([
-    //       {
-    //         latitude: lat,
-    //         longitude: long,
-    //       },
-    //     ], {
-    //       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-    //       animated: true,
-    //     });
-    //   }
-    // }, []);
-    if (mapRef.current && currentLocation) {
-      mapRef.current.fitToCoordinates([currentLocation], {
-        edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-        animated: true,
-      });
-    }
-  }, [currentLocation]);
+  // useEffect(() => {
+  //   //   if (mapRef.current) {
+  //   //     mapRef.current.fitToCoordinates([
+  //   //       {
+  //   //         latitude: lat,
+  //   //         longitude: long,
+  //   //       },
+  //   //     ], {
+  //   //       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+  //   //       animated: true,
+  //   //     });
+  //   //   }
+  //   // }, []);
+  //   if (mapRef.current && currentLocation) {
+  //     mapRef.current.fitToCoordinates([currentLocation], {
+  //       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+  //       animated: true,
+  //     });
+  //   }
+  // }, [currentLocation]);
 
 
   return (
-          <SafeAreaView style={{ flex: 1, flexDirection: 'column', backgroundColor: primary }}>
+    <SafeAreaView style={{ flex: 1, flexDirection: 'column', backgroundColor: primary }}>
       <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#FED8B1" translucent={true} />
 
       <TouchableOpacity
@@ -209,8 +231,8 @@ const Dashboard = (route) => {
 
       </View>
 
-
-        <MapView
+          
+          <MapView
           ref={mapRef}
           showsUserLocation={true}
           showsIndoors={true}
@@ -236,18 +258,32 @@ const Dashboard = (route) => {
             longitudeDelta: 0.0421,
           }}
         >
-          {currentLocation &&
+          {/* {locations.map((location, index) => (
+
+        <Marker
+          coordinate={{ latitude: Number(location.latitude), longitude: Number(location.longitude) }}
+          title="User Location"
+        />
+      )
+      )
+    
+      } */}
+
+          {currentLocation && locations.map((locations) => (
+
+         
             (<>   
              <Circle
-              center={{ latitude: userlat, longitude: userlong }}
+              center={{ latitude:userlat,longitude: userlong }}
               radius={1000}
               strokeColor="rgba(158, 158, 255, 1.0)"
               fillColor="rgba(158, 158, 255, 0.3)"
             />
+        
               <Marker
                   //   image={{uri: 'https://www.freelogoservices.com/api/main/images/1j+ojFVDOMkX9Wytexe43D6kh...SDrhFKnxvFwXs1M3EMoAJtlicsgfVu9Pg...',
                   // }}
-                  coordinate={{ latitude: userlat, longitude: userlong }}
+                  coordinate={{ latitude: Number(locations.latitude),longitude: Number(locations.longitude) }}
                   // coordinate={currentLocation}
                   title={"My Location"}
                   description={"I am here"}
@@ -256,11 +292,11 @@ const Dashboard = (route) => {
                 <Callout tooltip>
 
                   <View style={styles.bubble}>
-                    {/* <Text>A short description</Text> */}
-                    {/* <Image 
+                    <Text>A short description</Text>
+                    <Image 
                   style={styles.image}
                   source={require('../assets/app_icon.png')}            
-                  ></Image> */}
+                  ></Image>
                     <Text style={{ height: 120, width: 120}}>
                     <Text style={styles.name}>Hello , Sumit</Text>
 
@@ -279,9 +315,10 @@ const Dashboard = (route) => {
                 </Callout>
 
               </Marker>
-            </>
-            )}  
+            </> 
+            )) )}   
         </MapView>
+       
         {/* <View style = {styles.container}>
          <View>
          <TouchableOpacity
@@ -344,7 +381,7 @@ const styles = StyleSheet.create({
   //   alignItems: 'center',
   // },
   map: {
-    height: '30%',
+    height:windowHeight/5,
     
     // ...StyleSheet.absoluteFillObject,
 

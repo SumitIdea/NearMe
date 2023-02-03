@@ -94,7 +94,7 @@ export const markThreadLastRead = threadId => {
 
 export const listenToThreadTracking = () => {
   const user = currentUser();
-  console.log("c_user", user);
+  // console.log("c_user", user);
 
   return firestore().collection('USER_THREAD_TRACK').doc(user.uid);
 };

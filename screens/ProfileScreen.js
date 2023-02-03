@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, PermissionsAndroid, Dimensions, } from 'react-native'
-import React, { useRef, useState } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity,ActivityIndicator, PermissionsAndroid, Dimensions, } from 'react-native'
+import React, { useRef, useState, useEffect } from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 import { useWindowDimensions } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import database from '@react-native-firebase/database';
+import { primary } from '../constants/Colors';
 
 const { width } = Dimensions.get('window');
 
@@ -258,10 +260,67 @@ const data = [
     image: 'https://pixlr.com/images/index/remove-bg.webp'
   },
 ];
-const ProfileScreen = () => {
+const ProfileScreen = (props) => {
+  const [getloginEmail,  setLoginEmail] = useState('')
+  // setLoginEmail(props.route.params.userEmailId)
+              // console.log("email....login.", props);
+
   const { height, width } = useWindowDimensions();
   const refRBSheet = useRef();
   const [avatarSource, setAvatarSource] = useState(null);
+  const [getProfileData, setProfileData] = useState([])
+  const [getUserName, setUserName] = useState('')
+  const [getUserPhoneNo, setUserMobileNo] = useState('')
+  const [getUserCity, setUserCity] = useState('')
+  // const [isloading, setloading] = useState(false)
+
+
+
+  // useEffect(() => {
+
+  //   const fetchData = async () => {
+  
+  //     const userData =database().ref('/locations')
+  //     const data = userData.on('value', snapshot => {
+  //       setProfileData([]);
+  //       snapshot.forEach(function(childSnapshot) {
+  //         setProfileData(users_name => [...users_name, childSnapshot.val()])
+  //         //  console.log("result", childSnapshot); 
+
+           
+  //         getProfileData.forEach (item => {
+  //           // console.log("data......",item.username);
+
+  //             if(props.route.params.userEmailId == item.userEmailID)
+  //             {
+  //               // console.log("data......",item.username);
+  //             setUserName(item.username)
+  //             setUserMobileNo(item.mobileNo)
+  //             setUserCity(item.userCity)
+  //             }
+          
+  //           })
+
+         
+
+  //       });
+  //     })
+
+  //       userData.on('value',snapshot=>{
+  //         snapshot.forEach(childSnapshot=> {
+  //           console.log("data....", childSnapshot)
+  //           var arr = []
+  //           childSnapshot.forEach(element =>{
+  //             arr.push(element)
+  //           })
+
+  //       })
+  //     })
+      
+  //   };
+  //   fetchData();
+  // }, []);
+
 
   const requestCameraPermission = async () => {
     try {
@@ -287,7 +346,7 @@ const ProfileScreen = () => {
   };
 
   const takePhotoFromCamera = () => {
-    console.log(".........", "gfgdfgdfdf");
+    // console.log(".........", "gfgdfgdfdf");
   
     const options = {
       title: 'Select Avatar',
@@ -417,22 +476,22 @@ const ProfileScreen = () => {
 
         </View>
       </View>
-
+     
       <Text style={{
         fontSize: 18,
         color: '#800000',
         paddingHorizontal: 10,
         marginTop: 10,
         fontWeight: 'bold',
-        marginLeft: 20
-      }}>Sumit</Text>
+        marginLeft: 5
+      }}>{props.route.params.username}</Text>
       <Text style={{
         fontSize: 18,
         color: '#800000',
         paddingHorizontal: 10,
         fontWeight: 'bold',
-        marginLeft: 20
-      }}>72099998990</Text>
+        marginLeft: 5
+      }}>{props.route.params.phone_no}</Text>
 
       <TouchableOpacity
         style={styles.button}
@@ -440,6 +499,12 @@ const ProfileScreen = () => {
       >
         <Text style={{ fontWeight: 'bold', fontSize: 22, color: 'black' }}>Edit Profile</Text>
       </TouchableOpacity>
+      {/* {isloading == true ?
+            <View
+              //style= {{position:'absolute',alignSelf:'center',justifyContent:'center',alignItems:'center',zIndex:2,top:'50%'}}>
+              style={styles.preloader}>
+              <ActivityIndicator size={70} color={primary} />
+            </View> : null} */}
       <Text style={{
         fontSize: 18,
         color: 'black',
@@ -531,6 +596,16 @@ const styles = StyleSheet.create({
     height: 30,
     marginBottom: 10,
   },
+  preloader: {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff'
+  },
   panelButton: {
     padding: 13,
     borderRadius: 10,
@@ -551,6 +626,6 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 5,
-    marginBottom: 25
+    marginBottom: 25,
   },
 })

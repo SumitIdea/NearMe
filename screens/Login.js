@@ -21,6 +21,8 @@ const Login = () => {
   const [locationStatus, setLocationStatus] = useState('');
   const [isStartLoading , setstartLoading] = useState(true)
   const [hidePassword, setHidePassword] = useState(false)
+  const [getUserData, setUserData] = useState([])
+
   const CheckConnectivity = () => {
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
@@ -35,6 +37,22 @@ const Login = () => {
   }
  
  
+  useEffect(() => {
+
+    const fetchData = async () => {
+  
+      const userData =database().ref('/User_SignUp')
+      const data = userData.on('value', snapshot => {
+        setUserData([]);
+        snapshot.forEach(function(childSnapshot) {
+          setUserData(users_name => [...users_name, childSnapshot.val()])
+          // console.log("name....",childSnapshot.val());
+
+        });
+      })
+    };
+    fetchData();
+  }, []);
   useEffect(() => {
               
 
@@ -112,15 +130,34 @@ managePasswordVisibility = () => {
     var min = new Date().getMinutes(); //Current Minutes
     var sec = new Date().getSeconds(); //Current Seconds
 
-      database().ref('/User_Login').push({
-        "userEmailID": email,
-        "userPassword" : password,
-        "userLatitude":currentLatitude,
-        "userLongitude":currentLongitude,
-        "date":date+"/"+month+"/"+year,
-        "time": hours+":"+min+":"+sec
+    getUserData.forEach(result=>{
+      console.log("result====>", result.username)
+      if(result.userEmail == email){
+        console.log("....name=====", result.userName);
+        database().ref('locations').push({
+          "userEmailID": email,
+          latitude: currentLatitude,
+          longitude: currentLongitude,
+          "date":date+"/"+month+"/"+year,
+          "time": hours+":"+min+":"+sec,
+          "username": result.userName,
+          "mobileNo":result.userPhone,
+          "userCity":result.city,
+        });
+    //   }
+    // })
+  
+  
+    
+      // database().ref('/User_Login').push({
+      //   "userEmailID": email,
+      //   "userPassword" : password,
+      //   "userLatitude":currentLatitude,
+      //   "userLongitude":currentLongitude,
+      //   "date":date+"/"+month+"/"+year,
+      //   "time": hours+":"+min+":"+sec
         
-      });
+      // });
   //     let obj = {  
   //       "getLatitude":currentLatitude,
   //       "getLogitude":currentLongitude, 
@@ -135,16 +172,19 @@ managePasswordVisibility = () => {
     } else {
       try {
         setloading(true)
-        let response = await firebase.auth().signInWithEmailAndPassword(email, password)
+        let response =  firebase.auth().signInWithEmailAndPassword(email, password)
           .then(() => {
             console.log('User account signed in!');
             // navigation.navigate('Login')
-            
+            console.log("======================", result.username);
             setloading(false)
             navigation.navigate('Dashboard',{
               "userEmail":email,
               "userLatitude":currentLatitude,
               "userLongitude":currentLongitude,
+              "username":result.userName,
+              "user_phoneNo": result.userPhone,
+              "user_cityName":result.userCity
 
             })
 
@@ -161,6 +201,9 @@ managePasswordVisibility = () => {
       }
     }
   }
+})
+  }
+  
   const getOneTimeLocation = () => {
     setLocationStatus('Getting Location ...');
     Geolocation.getCurrentPosition(
