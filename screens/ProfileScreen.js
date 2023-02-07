@@ -438,10 +438,11 @@ const ProfileScreen = (props) => {
         }}>
         <Image
           style={{ height: 60, width: 60, backgroundColor: 'grey', borderRadius: 50 }}
-          source={{ uri: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' }}>
-
-        </Image>
-
+          // source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar7.png' }} />
+          source={  props.route.params.user_gender === 'Male'
+          ? {uri: 'https://bootdey.com/img/Content/avatar/avatar7.png'}
+          : {uri: 'https://img.freepik.com/premium-vector/face-cute-girl-avatar-young-girl-portrait-vector-flat-illustration_192760-82.jpg?w=740'} }
+        />
         <View
           // style={{flexDirection:'row', alignItems:'center', marginTop:20, marginLeft:10}}
           style={{ marginLeft: 10 }}
@@ -485,6 +486,13 @@ const ProfileScreen = (props) => {
         fontWeight: 'bold',
         marginLeft: 5
       }}>{props.route.params.username}</Text>
+       <Text style={{
+        fontSize: 18,
+        color: '#800000',
+        paddingHorizontal: 10,
+        fontWeight: 'bold',
+        marginLeft: 5
+      }}>{props.route.params.user_gender}</Text>
       <Text style={{
         fontSize: 18,
         color: '#800000',

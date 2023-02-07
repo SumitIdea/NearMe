@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View,Image,StyleSheet,TouchableOpacity} from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
 
 import {
@@ -39,6 +39,9 @@ export default ({route}) => {
 
   return (
     <View style={{backgroundColor: '#fff', flex: 1}}>
+
+{/* <Image source={{ uri: 'https://www.bootdey.com/img/Content/avatar/avatar1.png'}} style={styles.userPic} /> */}
+
       <GiftedChat
         messages={messages}
         onSend={newMessages => {
@@ -46,6 +49,16 @@ export default ({route}) => {
 
           createMessage(thread._id, text);
         }}
+        alwaysShowSend
+        showUserAvatar
+        isAnimated
+        showAvatarForEveryMessage
+        renderActions={() => (
+          <TouchableOpacity style={{ padding: 10 }} >
+            <Image  style={styles.userPic}   
+             source={{ uri: 'https://w7.pngwing.com/pngs/529/527/png-transparent-computer-icons-emoticon-smiley-sad-emoji-miscellaneous-cdr-face.png' }} />
+          </TouchableOpacity>
+        )}
         user={{
           _id: user.uid,
         }}
@@ -53,3 +66,11 @@ export default ({route}) => {
     </View>
   );
 };
+const styles = StyleSheet.create({
+userPic: {
+  height: 25,
+  width: 25,
+  borderRadius: 20,
+  backgroundColor: '#f8f8f8',
+},
+})

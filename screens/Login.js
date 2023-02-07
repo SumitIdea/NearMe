@@ -43,6 +43,8 @@ const Login = () => {
   
       const userData =database().ref('/User_SignUp')
       const data = userData.on('value', snapshot => {
+                  console.log("name....",snapshot);
+
         setUserData([]);
         snapshot.forEach(function(childSnapshot) {
           setUserData(users_name => [...users_name, childSnapshot.val()])
@@ -53,6 +55,8 @@ const Login = () => {
     };
     fetchData();
   }, []);
+
+
   useEffect(() => {
               
 
@@ -131,6 +135,8 @@ managePasswordVisibility = () => {
     var sec = new Date().getSeconds(); //Current Seconds
 
     getUserData.forEach(result=>{
+      console.log("this is clicked", "clicked ");
+
       console.log("result====>", result.username)
       if(result.userEmail == email){
         console.log("....name=====", result.userName);
@@ -143,9 +149,11 @@ managePasswordVisibility = () => {
           "username": result.userName,
           "mobileNo":result.userPhone,
           "userCity":result.city,
+          "gender_specific": result.gender
         });
     //   }
-    // })
+    // }).
+
   
   
     
@@ -171,9 +179,11 @@ managePasswordVisibility = () => {
       Alert.alert('Please Enter Password!')
     } else {
       try {
+
         setloading(true)
         let response =  firebase.auth().signInWithEmailAndPassword(email, password)
-          .then(() => {
+          .then((res) => {
+            console.log("Login,,,,,,,", res);
             console.log('User account signed in!');
             // navigation.navigate('Login')
             console.log("======================", result.username);
@@ -184,7 +194,9 @@ managePasswordVisibility = () => {
               "userLongitude":currentLongitude,
               "username":result.userName,
               "user_phoneNo": result.userPhone,
-              "user_cityName":result.userCity
+              "user_cityName":result.userCity,
+              "user_gender": result.gender
+
 
             })
 

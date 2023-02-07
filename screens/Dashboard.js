@@ -96,7 +96,8 @@ const Dashboard = (route) => {
           name="Profile"
           initialParams={{ userEmailId: route.route.params.userEmail, "username": route.route.params.username,
         "phone_no": route.route.params.user_phoneNo,
-        "user_city":route.route.params.user_cityName}}
+        "user_city":route.route.params.user_cityName,
+      "user_gender": route.route.params.user_gender}}
           component={ProfileScreen}
           options={{ tabBarLabel: 'Profile' }}
         />
@@ -104,16 +105,7 @@ const Dashboard = (route) => {
     );
   }
 
-  useEffect (() => {
-    database()
-    .ref('/User_SignUp')
-    .once('value')
-    .then(snapshot => {
-      // console.log('User data: ', snapshot.val());
-      // setName(snapshot.val().userName)
-    });
-    
-  },[])
+ 
 
   const logOut = () => {
     Alert.alert(

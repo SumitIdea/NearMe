@@ -16,19 +16,25 @@ const Registration = () => {
   const [userName, setUserName] = useState('')
   const [userPhoneNo, setUser_PhoneNo] = useState('')
   const [userCity, setUser_City] = useState('')
+  const [gender, setGender] = useState('Male');
 
   const [isloading, setloading]= useState(false)
   const navigation = useNavigation()
 
+  // console.log("....sign up gender", gender);
+
+
   const register = async(name, email, password, phone_no, city) => {
   console.log("....sign up phone no", phone_no);
   console.log("....sign up city", city);
+
 
   database().ref('/User_SignUp').push({
       "userName": name,
       "userEmail": email,
       "userPhone" : phone_no,
       "userCity":city,
+      "gender" : gender
     });
     
     if(userEmail=='')
@@ -122,6 +128,54 @@ const Registration = () => {
               resizeMode='contain' style={{ width: 35, height: 25 }} />
           </TouchableOpacity>
         </View>
+      
+      <View style={{flexDirection:'row', justifyContent:'center'}}>
+
+        <TouchableOpacity
+        style={{ paddingHorizontal: 10 , flexDirection:'row' }}
+        onPress={() => setGender('Male')}
+      >
+         <Image
+          style={styles.userPic}
+          source={  gender === 'Male'
+          ? {uri: 'https://img.freepik.com/premium-photo/checkmark-painting-isolated-white_263357-1996.jpg?w=740'}
+          : null }
+        />
+        <Image
+          style={styles.userPic}
+          source={
+            // gender === 'Male'
+               {uri : 'https://cdn-icons-png.flaticon.com/512/3048/3048122.png'}
+              // ? : {uri : 'https://cdn-icons-png.flaticon.com/512/3048/3048122.png'}
+              // https://cdn-icons-png.flaticon.com/512/4605/4605368.png
+              // : null
+          }
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ paddingHorizontal: 20 , flexDirection:'row' }}
+        onPress={() => setGender('Female')}
+      >
+          <Image
+          style={styles.userPic}
+          source={  gender === 'Female'
+          ? {uri: 'https://img.freepik.com/premium-photo/checkmark-painting-isolated-white_263357-1996.jpg?w=740'}
+          : null }
+        /> 
+        <Image
+          style={styles.userPic}
+          source={
+            // gender === 'Female'
+               {uri : 'https://cdn-icons-png.flaticon.com/512/6997/6997662.png'}
+
+              // ? : {uri : 'https://cdn-icons-png.flaticon.com/512/264/264735.png'}
+              // : null
+
+          }
+        />
+      </TouchableOpacity>
+
+      </View>
         <TextInput
           style={styles.textInput}
           placeholder="Username"
@@ -245,6 +299,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: 50,
-  }
+  },
+  userPic: {
+    height: 40,
+    width: 40,
+    margin: 5,
+    borderRadius: 20,
+    backgroundColor: '#f8f8f8',
+  },
 })
 

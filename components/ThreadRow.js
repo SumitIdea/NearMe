@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity,Image} from 'react-native';
 
 const styles = StyleSheet.create({
   row: {
@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flexShrink: 1,
+    marginStart:5
   },
   header: {
     flexDirection: 'row',
@@ -42,6 +43,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 20,
   },
+  userPic: {
+    height: 40,
+    width: 40,
+    margin: 5,
+    borderRadius: 20,
+    backgroundColor: '#f8f8f8',
+  },
 });
 
 export const Separator = () => <View style={styles.separator} />;
@@ -54,7 +62,10 @@ export const ThreadRow = ({name, latestMessage, unread, onPress}) => (
       ) : (
         <View style={styles.dot} />
       )}
+            <Image source={{ uri: 'https://www.bootdey.com/img/Content/avatar/avatar1.png'}} style={styles.userPic} />
+
       <View style={styles.content}>
+
         <View style={styles.header}>
           <Text style={styles.nameText}>{name}</Text>
         </View>
