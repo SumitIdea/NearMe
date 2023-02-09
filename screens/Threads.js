@@ -1,16 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {FlatList, TextInput, View, Alert} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 
 import {ThreadRow, Separator} from '../components/ThreadRow';
 import {listenToThreads, listenToThreadTracking} from '../firebase';
 
 const isThreadUnread = (thread, threadTracking) => {
-  console.log("...................thread", threadTracking);
-  console.log(".....",
-    threadTracking[thread._id] < thread.latestMessage.createdAt,
-    thread.latestMessage.createdAt,
-    threadTracking[thread._id],
-  );
+  // console.log("...................thread", thread);
+  // console.log(".....",
+  //   threadTracking[thread._id] < thread.latestMessage.createdAt,
+  //   thread.latestMessage.createdAt,
+  //   threadTracking[thread._id],
+  // );
   if (
     threadTracking[thread._id] &&
     threadTracking[thread._id] < thread.latestMessage.createdAt
@@ -47,7 +48,7 @@ export default ({navigation}) => {
 
   useEffect(() => {
     const unsubscribe = listenToThreadTracking().onSnapshot(snapshot => {
-      console.log("snapshot.......",snapshot);
+      // console.log("snapshot.......",snapshot);
       setThreadTracking(snapshot.data() || {});
     });
 
@@ -55,7 +56,21 @@ export default ({navigation}) => {
       unsubscribe();
     };
   }, []);
-  const handlerClick = () => {
+
+  const deleteUser =(name) => {
+    threads.forEach(result=>{
+      if(name==result._id)
+      {
+        const dbRef =  firestore().collection('MESSAGE_THREADS').doc(name)
+        dbRef.delete().then((res) => {
+          console.log('Item removed from database',res)
+        })
+      }
+    })
+  }
+
+
+  const handlerClick = (name) => {
     Alert.alert(
       'wooME Alert',
       'Are you sure want to Delete ?',
@@ -65,7 +80,7 @@ export default ({navigation}) => {
           onPress: () => { cancelable: true },
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => "" },
+        { text: 'OK', onPress: () => deleteUser(name) },
       ],
       { cancelable: false },
     );
@@ -80,7 +95,7 @@ export default ({navigation}) => {
           <ThreadRow
             {...item}
             onPress={() => navigation.navigate('Messages', {thread: item})}
-            onLongPress={()=>handlerClick()}
+            onLongPress={()=>handlerClick(item._id)}
             unread={isThreadUnread(item, threadTracking)}
           />
         )}
