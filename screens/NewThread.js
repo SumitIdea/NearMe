@@ -22,7 +22,7 @@ export default ({navigation}) => {
   return (
     <View style={{flex: 1, justifyContent: 'center', backgroundColor: '#fff'}}>
       <TextField
-        placeholder="Thread Name"
+        placeholder="Friend Name"
         onChangeText={name => setThreadName(name)}
       />
       <Button onPress={handlePress} title="Create" disabled={loading} />

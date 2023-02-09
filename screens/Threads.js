@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, TextInput, View, Alert} from 'react-native';
 
 import {ThreadRow, Separator} from '../components/ThreadRow';
 import {listenToThreads, listenToThreadTracking} from '../firebase';
@@ -55,6 +55,21 @@ export default ({navigation}) => {
       unsubscribe();
     };
   }, []);
+  const handlerClick = () => {
+    Alert.alert(
+      'wooME Alert',
+      'Are you sure want to Delete ?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => { cancelable: true },
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => "" },
+      ],
+      { cancelable: false },
+    );
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff', paddingBottom: 50}}>
@@ -65,6 +80,7 @@ export default ({navigation}) => {
           <ThreadRow
             {...item}
             onPress={() => navigation.navigate('Messages', {thread: item})}
+            onLongPress={()=>handlerClick()}
             unread={isThreadUnread(item, threadTracking)}
           />
         )}

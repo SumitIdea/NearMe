@@ -54,8 +54,10 @@ const styles = StyleSheet.create({
 
 export const Separator = () => <View style={styles.separator} />;
 
-export const ThreadRow = ({name, latestMessage, unread, onPress}) => (
-  <TouchableOpacity onPress={onPress}>
+export const ThreadRow = ({name, latestMessage, unread, onPress, onLongPress}) => (
+  
+  <TouchableOpacity onPress={onPress}
+   onLongPress={onLongPress}>
     <View style={styles.row}>
       {unread ? (
         <View style={[styles.dot, styles.dotUnread]} />
