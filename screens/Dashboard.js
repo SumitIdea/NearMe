@@ -13,6 +13,7 @@ import MyRoom from './MyRoom';
 import Explore from './Explore';
 // let itemsRef = database().ref('/User_Details');
 import {Dimensions} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -94,10 +95,10 @@ const Dashboard = (route) => {
         />
         <Tab.Screen
           name="Profile"
-          initialParams={{ userEmailId: route.route.params.userEmail, "username": route.route.params.username,
+          initialParams={{ "userEmailId": route.route.params.userEmail, "username": route.route.params.username,
         "phone_no": route.route.params.user_phoneNo,
         "user_city":route.route.params.user_cityName,
-      "user_gender": route.route.params.user_gender}}
+        "user_gender": route.route.params.user_gender}}
           component={ProfileScreen}
           options={{ tabBarLabel: 'Profile' }}
         />
@@ -125,6 +126,8 @@ const Dashboard = (route) => {
   }
 
   signOut = () => {
+    AsyncStorage.clear();
+
     firebase.auth().signOut().then(() => {
       navigation.navigate('Login')
       ToastAndroid.showWithGravity(

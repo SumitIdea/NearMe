@@ -7,7 +7,7 @@ export default ({onHasUser}) => {
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(authUser => {
       if (authUser) {
-        console.log(authUser);
+        // console.log(authUser);
         return onHasUser();
       }
 

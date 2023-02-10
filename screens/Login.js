@@ -5,7 +5,7 @@ import { firebase } from '@react-native-firebase/auth'
 import { primary } from '../constants/Colors';
 import Geolocation from '@react-native-community/geolocation';
 import database from '@react-native-firebase/database';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo'
 
 // import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-community/google-signin';
@@ -15,7 +15,8 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isloading, setloading] = useState(false)
-  // 
+  const [isFirstTime, setIsFirstTime] = useState(false);
+
   const [currentLongitude, setCurrentLongitude] = useState('...');
   const [currentLatitude, setCurrentLatitude] = useState('...');
   const [locationStatus, setLocationStatus] = useState('');
@@ -95,32 +96,32 @@ const Login = () => {
     };
   }, []);
 
-  const _signIn = async () => {
-    GoogleSignin.configure({
-      scopes: [],
-      webClientId:
-        '60058895605-i7u2peaa0veummhe2ifv8b2il9ks43o7.apps.googleusercontent.com',
-      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-    });
+  // const _signIn = async () => {
+  //   GoogleSignin.configure({
+  //     scopes: [],
+  //     webClientId:
+  //       '60058895605-i7u2peaa0veummhe2ifv8b2il9ks43o7.apps.googleusercontent.com',
+  //     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  //   });
 
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log("userInfo", userInfo);
-    } catch (error) {
-      console.log("userError", error);
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     console.log("userInfo", userInfo);
+  //   } catch (error) {
+  //     console.log("userError", error);
 
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g.permission sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
-    }
-  };
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       // user cancelled the login flow
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       // operation (e.g.permission sign in) is in progress already
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       // play services not available or outdated
+  //     } else {
+  //       // some other error happened
+  //     }
+  //   }
+  // };
 //Toggle password visibility
 managePasswordVisibility = () => {
  setHidePassword(!hidePassword)
@@ -137,7 +138,7 @@ managePasswordVisibility = () => {
     getUserData.forEach(result=>{
       console.log("this is clicked", "clicked ");
 
-      console.log("result====>", result.username)
+      console.log("result====>", result.userName)
       if(result.userEmail == email){
         console.log("....name=====", result.userName);
         database().ref('locations').push({
@@ -186,7 +187,6 @@ managePasswordVisibility = () => {
             console.log("Login,,,,,,,", res);
             console.log('User account signed in!');
             // navigation.navigate('Login')
-            console.log("======================", result.username);
             setloading(false)
             navigation.navigate('Dashboard',{
               "userEmail":email,
@@ -196,8 +196,6 @@ managePasswordVisibility = () => {
               "user_phoneNo": result.userPhone,
               "user_cityName":result.userCity,
               "user_gender": result.gender
-
-
             })
 
             ToastAndroid.showWithGravity(
@@ -205,6 +203,24 @@ managePasswordVisibility = () => {
               ToastAndroid.LONG,
               ToastAndroid.BOTTOM
             );
+            const value = {
+              "asyn_email": email,
+              "asyn_lati": currentLatitude,
+              "asyn_long": currentLongitude,
+              "firstTime" : 'true',
+              "asyn_username":result.userName,
+              "asyn_phoneNo": result.userPhone,
+              "asyn_cityName":result.userCity,
+              "asyn_gender": result.gender
+            };
+          
+            
+              try {
+                 AsyncStorage.setItem("user_asyn", JSON.stringify(value));
+              } catch (error) {
+                console.log(error);
+              }
+            
           })
       } catch (error) {
         setloading(false)

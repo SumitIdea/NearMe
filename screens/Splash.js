@@ -2,7 +2,10 @@ import React, {useRef, useState} from 'react';
 import {View, StyleSheet, Image, useWindowDimensions,Alert} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {useEffect} from 'react';
+import Login from './Login';
+import Dashboard from './Dashboard';
 // import NetInfo from '@react-native-community/netinfo'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -10,8 +13,15 @@ const Splash = props => {
   const [authLoaded, setAuthLoaded] = useState(false);
   const [animationLoaded, setAnimationLoaded] = useState(false);
   const {height, width, fontScale} = useWindowDimensions();
- 
-   
+  const [isFirstTime, setIsFirstTime] = useState(false);
+  const [email, setEmail] = useState("")
+  const [lat, setLati] = useState("")
+  const [long, setLong] = useState("")
+  const [username, setUsername] =useState("")
+  const [phoneNo, setPhoneNo] =useState("")
+  const [city, setCity] =useState("")
+  const [gender, setGender] = useState("")
+
   const ref = useRef(null);
 
 
@@ -19,26 +29,54 @@ const Splash = props => {
     setTimeout(() => {
       setAuthLoaded(true);
     }, 5000);
+    const checkFirstTime = async () => {
+      const firstTime = await AsyncStorage.getItem('user_asyn');
+      const currentUser = JSON.parse(firstTime);
+      setEmail(currentUser.asyn_email)
+      setLati(currentUser.asyn_lati)
+      setLong(currentUser.asyn_long)
+      setUsername(currentUser.asyn_username)
+      setPhoneNo(currentUser.asyn_phoneNo)
+      setCity(currentUser.asyn_cityName)
+      setGender(currentUser.asyn_gender)
+
+      console.log("asyn storage ====>>>>",currentUser);
+
+      if (currentUser.firstTime !== null) {
+        console.log("data......", currentUser.firstTime);
+        setIsFirstTime(currentUser.firstTime);
+      }
+    };
+
+    checkFirstTime();
   }, []);
 
   const onAnimationFinish = () => {
     setAnimationLoaded(true);
   };
 
+
   useEffect(() => {
-    
-    // NetInfo.fetch().then(state => {
-    //   if (state.isConnected) {
-    //     console.log('true ' + state.isConnected);
-        
-    //   } else {
-    //     console.log('false ' + state.isConnected);
-    //     Alert.alert('Please Check Your Internet Connection');
-    //   }
-    // });
-   
+  
     if (authLoaded && animationLoaded) {
-      props.navigation.replace('Login');
+      if (isFirstTime) {
+        console.log("data......,,,,,,dash", isFirstTime);
+        props.navigation.replace('Dashboard',{
+          "userEmail":email,
+          "userLatitude":lat,
+          "userLongitude":long,
+          "username":username,
+          "user_phoneNo": phoneNo,
+          "user_cityName":city,
+          "user_gender": gender
+        })
+      }
+      else{
+        console.log("data......,,,,,,login", isFirstTime);
+
+        props.navigation.replace('Login')
+      }
+      // props.navigation.replace('Login');
     }
   }, [authLoaded, animationLoaded, props.navigation]);
 

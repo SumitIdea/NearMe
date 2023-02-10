@@ -261,66 +261,9 @@ const data = [
   },
 ];
 const ProfileScreen = (props) => {
-  const [getloginEmail,  setLoginEmail] = useState('')
-  // setLoginEmail(props.route.params.userEmailId)
-              // console.log("email....login.", props);
-
-  const { height, width } = useWindowDimensions();
+              // console.log("email....login.", props.route.params.username);
   const refRBSheet = useRef();
-  const [avatarSource, setAvatarSource] = useState(null);
-  const [getProfileData, setProfileData] = useState([])
-  const [getUserName, setUserName] = useState('')
-  const [getUserPhoneNo, setUserMobileNo] = useState('')
-  const [getUserCity, setUserCity] = useState('')
-  // const [isloading, setloading] = useState(false)
-
-
-
-  // useEffect(() => {
-
-  //   const fetchData = async () => {
-  
-  //     const userData =database().ref('/locations')
-  //     const data = userData.on('value', snapshot => {
-  //       setProfileData([]);
-  //       snapshot.forEach(function(childSnapshot) {
-  //         setProfileData(users_name => [...users_name, childSnapshot.val()])
-  //         //  console.log("result", childSnapshot); 
-
-           
-  //         getProfileData.forEach (item => {
-  //           // console.log("data......",item.username);
-
-  //             if(props.route.params.userEmailId == item.userEmailID)
-  //             {
-  //               // console.log("data......",item.username);
-  //             setUserName(item.username)
-  //             setUserMobileNo(item.mobileNo)
-  //             setUserCity(item.userCity)
-  //             }
-          
-  //           })
-
-         
-
-  //       });
-  //     })
-
-  //       userData.on('value',snapshot=>{
-  //         snapshot.forEach(childSnapshot=> {
-  //           console.log("data....", childSnapshot)
-  //           var arr = []
-  //           childSnapshot.forEach(element =>{
-  //             arr.push(element)
-  //           })
-
-  //       })
-  //     })
-      
-  //   };
-  //   fetchData();
-  // }, []);
-
+ 
 
   const requestCameraPermission = async () => {
     try {
